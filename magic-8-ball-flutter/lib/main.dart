@@ -7,8 +7,14 @@ void main() => runApp(
         home: Scaffold(
           backgroundColor: Colors.blue,
           appBar: AppBar(
+            backgroundColor: Colors.indigo,
             title: Center(
-              child: Text('Ask Me Anything'),
+              child: Text(
+                'Ask Me Anything',
+                style: TextStyle(
+                  fontSize: 25.0,
+                ),
+              ),
             ),
           ),
           body: EightBall(),
@@ -26,16 +32,17 @@ class _EightBallState extends State<EightBall> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Center(
       child: TextButton(
         child: Image.asset('images/ball$random.png'),
-        onPressed: changeAnswer(),
+        onPressed: () {
+          changeAnswer();
+        },
       ),
     );
   }
 
-  changeAnswer() {
-    print('pressed');
+  void changeAnswer() {
     setState(() {
       random = Random().nextInt(5) + 1;
     });
