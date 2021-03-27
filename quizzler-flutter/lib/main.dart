@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() => runApp(Quizzler());
 
@@ -25,6 +27,25 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+
+  List<Icon> scoreKeeper = [];
+  QuizBrain quizBrain = QuizBrain();
+  int questionIdx = 0;
+
+  void addCheckIcon() {
+    scoreKeeper.add(Icon(
+      Icons.check,
+      color: Colors.green,
+    ));
+  }
+
+  void addCrossIcon() {
+    scoreKeeper.add(Icon(
+      Icons.close,
+      color: Colors.red,
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +58,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                quizBrain.getQuestion(questionIdx).question,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -61,7 +82,9 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked true.
+                setState(() {
+                  addIcon(true);
+                });
               },
             ),
           ),
@@ -79,14 +102,54 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked false.
+                setState(() {
+                  addIcon(false);
+                });
               },
             ),
           ),
         ),
-        //TODO: Add a Row here as your score keeper
+        Row(
+          children: scoreKeeper,
+        )
       ],
     );
+  }
+
+  void incrementIdx() {
+    if (questionIdx + 1 == quizBrain.getLength()) {
+      Alert(
+        context: context,
+        type: AlertType.success,
+        title: "Finished",
+        desc: "Thanks for taking the quiz.",
+        buttons: [
+          DialogButton(
+            child: Text(
+              "start again",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () {
+              setState(() {
+                questionIdx = 0;
+                scoreKeeper.clear();
+                Navigator.pop(context);
+              });
+            },
+            width: 120,
+          )
+        ],
+      ).show();
+    } else {
+      questionIdx++;
+    }
+  }
+
+  void addIcon(bool pressedAnswer) {
+    quizBrain.getQuestion(questionIdx).answer == pressedAnswer
+        ? addCheckIcon()
+        : addCrossIcon();
+    incrementIdx();
   }
 }
 
