@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'constants.dart';
+import 'number_change_widget.dart';
 
 enum Gender { MALE, FEMALE }
 
@@ -16,6 +17,7 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   Gender selectedGender;
   int height = 180;
+  int weight = 60;
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +97,10 @@ class _InputPageState extends State<InputPage> {
                       inactiveTrackColor: Color(0xFF8D8E98),
                       thumbColor: kBottomContainerColor,
                       overlayColor: Color(0X29EB1555),
-                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 13.0),
-                      overlayShape: RoundSliderOverlayShape(overlayRadius: 25.0),
+                      thumbShape:
+                          RoundSliderThumbShape(enabledThumbRadius: 13.0),
+                      overlayShape:
+                          RoundSliderOverlayShape(overlayRadius: 25.0),
                       trackHeight: 1.5,
                     ),
                     child: Slider(
@@ -120,9 +124,20 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: ReusableCard(
                     color: kActiveReusableCardColor,
+                    cardChild: NumberChangeWidget(
+                      label: 'Weight',
+                      initialValue: 60,
+                    ),
                   ),
                 ),
-                Expanded(child: ReusableCard(color: kActiveReusableCardColor)),
+                Expanded(
+                    child: ReusableCard(
+                  color: kActiveReusableCardColor,
+                  cardChild: NumberChangeWidget(
+                    label: 'Age',
+                    initialValue: 20,
+                  ),
+                )),
               ],
             ),
           ),
