@@ -1,11 +1,14 @@
-import 'package:bmi_calculator/icon_card.dart';
-import 'package:bmi_calculator/reusable_card.dart';
+import 'file:///C:/Users/yzook/AndroidStudioProjects/bmi-calculator-flutter/lib/components/icon_card.dart';
+import 'file:///C:/Users/yzook/AndroidStudioProjects/bmi-calculator-flutter/lib/components/reusable_card.dart';
+import 'package:bmi_calculator/calculator.dart';
+import 'package:bmi_calculator/components/bottom_button.dart';
+import 'package:bmi_calculator/screens/results_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'constants.dart';
-import 'number_change_widget.dart';
+import '../constants.dart';
+import '../components/number_change_widget.dart';
 
 enum Gender { MALE, FEMALE }
 
@@ -17,7 +20,10 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   Gender selectedGender;
   int height = 180;
-  int weight = 60;
+  NumberChangeWidget weightWidget = NumberChangeWidget(
+    label: 'Weight',
+    number: 60,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +130,7 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: ReusableCard(
                     color: kActiveReusableCardColor,
-                    cardChild: NumberChangeWidget(
-                      label: 'Weight',
-                      initialValue: 60,
-                    ),
+                    cardChild: weightWidget,
                   ),
                 ),
                 Expanded(
@@ -135,17 +138,27 @@ class _InputPageState extends State<InputPage> {
                   color: kActiveReusableCardColor,
                   cardChild: NumberChangeWidget(
                     label: 'Age',
-                    initialValue: 20,
+                    number: 20,
                   ),
                 )),
               ],
             ),
           ),
-          Container(
-            color: kBottomContainerColor,
-            margin: EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kBottomContainerHeight,
+          BottomButton(
+            onPressed: () {
+              Calculator calc =
+                  Calculator(height: height, weight: weightWidget.getNumber());
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ResultsPage(
+                          resultNumber: calc.getBMI(),
+                          resultText: calc.getResult(),
+                          advice: calc.getDescription(),
+                        )),
+              );
+            },
+            label: 'Calculate BMI',
           ),
         ],
       ),
