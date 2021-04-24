@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_list/models/tasks_data.dart';
 import 'package:todoey_list/widgets/task_list.dart';
 
 import 'add_task_sheet.dart';
@@ -14,8 +16,10 @@ class TasksScreen extends StatelessWidget {
         backgroundColor: Colors.lightBlueAccent,
         onPressed: () {
           showModalBottomSheet(
-              isScrollControlled: true,
-              context: context, builder: (context) => AddTaskSheet());
+            isScrollControlled: true,
+            context: context,
+            builder: (context) => AddTaskSheet(),
+          );
         },
       ),
       body: Column(
@@ -46,7 +50,7 @@ class TasksScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '12 tasks',
+                  '${Provider.of<TasksData>(context).tasksCount} tasks',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,

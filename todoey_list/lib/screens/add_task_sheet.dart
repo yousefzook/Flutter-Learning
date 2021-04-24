@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_list/models/tasks_data.dart';
 
 class AddTaskSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String taskText;
     return Container(
       color: Color(0xff757575),
       child: Container(
@@ -26,9 +29,17 @@ class AddTaskSheet extends StatelessWidget {
             TextField(
               autofocus: true,
               textAlign: TextAlign.center,
+              onChanged: (text) {
+                taskText = text;
+              },
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                print(taskText);
+                Provider.of<TasksData>(context, listen: false)
+                    .addTask(taskText);
+                Navigator.pop(context);
+              },
               child: Text(
                 'Add',
                 style: TextStyle(color: Colors.white),
